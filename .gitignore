@@ -6,3 +6,5 @@ bin
 
 .env
 .air.toml
+
+*_templ.txt

@@ -18,5 +18,6 @@ func main() {
 
 	e.GET("/", handlers.RootHandler)
 
+	e.Static("/assets", "assets")
 	e.Start(":" + os.Getenv("PORT"))
 }
