@@ -1,0 +1,15 @@
+{
+  "devDependencies": {
+    "esbuild": "0.20.1",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "htmx.org": "^1.9.10"
+  },
+  "scripts": {
+    "build": "esbuild src/scripts/*.ts --bundle --minify --outdir=assets/js --target=chrome58,firefox57,safari11,edge16 && npx tailwindcss -i ./src/styles/styles.css -o ./assets/css/styles.min.css --minify",
+    "serve": "esbuild src/scripts/*.ts --bundle --minify --sourcemap --outdir=assets/js --watch --servedir=assets/js",
+    "dev": "esbuild src/scripts/*.ts --bundle --minify --sourcemap --outdir=assets/js --watch"
+  }
+}
