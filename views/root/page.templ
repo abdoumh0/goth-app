@@ -2,8 +2,8 @@ package root
 
 import "github.com/abdoumh0/goth-app/views/layout"
 
-templ Index() {
+templ Index(table templ.Component) {
 	@layout.Base("New App") {
-		<h1>Hello!</h1>
+		@table
 	}
 }

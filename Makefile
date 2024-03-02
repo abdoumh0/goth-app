@@ -5,7 +5,7 @@ tmpl:
 	@templ generate -watch
 
 tailwind:
-	npx tailwindcss -i ./src/styles/styles.css -o ./assets/css/styles.min.css --minify --watch
+	npx tailwindcss -i ./src/styles/styles.css -o ./assets/css/styles.css --minify --watch
 
 build:
 	@npm run build

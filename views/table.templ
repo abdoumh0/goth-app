@@ -1,0 +1,29 @@
+package views
+
+import "github.com/abdoumh0/goth-app/types"
+
+templ tableRow() {
+}
+
+templ Table(data []types.Person) {
+	<table class="table-fixed">
+		<thead class="bg-indigo-700 text-white">
+			<tr class="[&>*]:min-w-48">
+				<th>Id</th>
+				<th>Name</th>
+				<th>Surname</th>
+				<th>Class</th>
+			</tr>
+		</thead>
+		<tbody>
+			for _, v := range data {
+				<tr class="text-center">
+					<td><div>{ v.Id }</div></td>
+					<td>{ v.Name }</td>
+					<td>{ v.Surname }</td>
+					<td>{ v.Class }</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
