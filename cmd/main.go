@@ -30,6 +30,6 @@ func main() {
 
 	e.GET("/", s.RootHandler)
 
-	e.Static("/assets", "assets")
+	e.Static("/", "assets")
 	e.Start(":" + os.Getenv("PORT"))
 }

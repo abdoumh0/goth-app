@@ -1,0 +1,16 @@
+package rootLayout
+
+import "github.com/abdoumh0/goth-app/views/layout"
+
+templ Index(table templ.Component, pagination templ.Component) {
+	@layout.Base("New App") {
+		<main>
+			<div id="table_container" class="w-fit p-2 bg-gray-50 mx-auto my-4 rounded border-[1px] border-gray-500">
+				@table
+			</div>
+			<div id="pagination_container" class="w-fit mx-auto my-4">
+				@pagination
+			</div>
+		</main>
+	}
+}

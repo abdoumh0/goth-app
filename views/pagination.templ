@@ -1,0 +1,37 @@
+package views
+
+import "strconv"
+
+templ pageLink(href string, label string, key int, currentPage int) {
+	<li class="w-7 h-7 min-w-fit"><a href={ templ.SafeURL(href) } class={ templ.KV("bg-gray-200 text-gray-600", currentPage != key), templ.KV("bg-indigo-400 text-white", currentPage == key) ," hover:bg-gray-500 hover:text-white transition-colors duration-100 rounded-sm font-mono text-sm font-semibold flex justify-center items-center text-center min-w-fit w-7 h-7 px-2" }>{ label }</a></li>
+}
+
+templ pageButton(href string, label string) {
+	<li class="w-7 h-7 min-w-fit"><a href={ templ.SafeURL(href) } class="bg-gray-200 text-gray-600  hover:bg-indigo-400 hover:text-white transition-colors duration-100 rounded-sm font-mono text-sm font-semibold flex justify-center items-center text-center min-w-fit w-7 h-7 px-2">{ label }</a></li>
+}
+
+templ Pagination(pages int, route string, param string, abbr int, currentPage int) {
+	<ul class="flex list-none [&>li]:mx-[2px] w-fit">
+		if currentPage > 1 {
+			@pageButton(route+"?"+param+"="+strconv.Itoa(currentPage-1), "Previous")
+		}
+		if pages > 1 {
+			@pageLink(route+"?"+param+"="+strconv.Itoa(1), strconv.Itoa(1), 1, currentPage)
+		}
+		if currentPage - 3 > 1 {
+			<li>...</li>
+		}
+		for i := currentPage - 2; i < min(pages, max(currentPage + 4, abbr + 1)); i++ {
+			if i > 1 {
+				@pageLink(route+"?"+param+"="+strconv.Itoa(i), strconv.Itoa(i), i, currentPage)
+			}
+		}
+		if currentPage + 4 < pages {
+			<li>...</li>
+		}
+		@pageLink(route+"?"+param+"="+strconv.Itoa(pages), strconv.Itoa(pages), pages, currentPage)
+		if currentPage < pages {
+			@pageButton(route+"?"+param+"="+strconv.Itoa(currentPage+1), "Next")
+		}
+	</ul>
+}

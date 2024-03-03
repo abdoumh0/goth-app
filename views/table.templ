@@ -2,27 +2,52 @@ package views
 
 import "github.com/abdoumh0/goth-app/types"
 
+templ tableHeader(label string) {
+	<th class="px-10">
+		<div class="flex justify-center">{ label } <button type="button" class="mx-2">^</button></div>
+	</th>
+}
+
 templ tableRow() {
+	<tr class="text-center">
+		{ children... }
+		<td class="p-2">
+			<div class="flex justify-between [&>button]:mx-[1px]">
+				<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/assets/images/edit.svg" alt="edit" width="20px"/></button>
+				<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/assets/images/delete.svg" alt="delete" width="20px"/></button>
+			</div>
+		</td>
+	</tr>
 }
 
 templ Table(data []types.Person) {
-	<table class="table-fixed">
-		<thead class="bg-indigo-700 text-white">
-			<tr class="[&>*]:min-w-48">
-				<th>Id</th>
-				<th>Name</th>
-				<th>Surname</th>
-				<th>Class</th>
+	<table class="table-auto rounded overflow-hidden">
+		<thead class="bg-indigo-400 text-white ">
+			<tr class="[&>th]:py-2">
+				@tableHeader("Id")
+				@tableHeader("Name")
+				@tableHeader("Surname")
+				@tableHeader("Class")
+				<th class="p-2">
+					<div class="flex justify-between [&>button]:mx-[1px]">
+						<button type="button" id="add" class="hover:bg-indigo-300 min-w-5 p-1 rounded">
+							<img src="/assets/images/add.svg" alt="add" width="20px"/>
+						</button>
+						<button type="button" class="hover:bg-indigo-300 min-w-5 p-1 rounded">
+							<img src="/assets/images/print.svg" alt="print" width="16px"/>
+						</button>
+					</div>
+				</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody class="[&>tr:nth-child(even)]:bg-gray-100" id="tbody">
 			for _, v := range data {
-				<tr class="text-center">
-					<td><div>{ v.Id }</div></td>
-					<td>{ v.Name }</td>
-					<td>{ v.Surname }</td>
-					<td>{ v.Class }</td>
-				</tr>
+				@tableRow() {
+					<td class=" border-gray-600 p-2 py-1">{ v.Id }</td>
+					<td class=" border-gray-600 p-2 py-1">{ v.Name }</td>
+					<td class=" border-gray-600 p-2 py-1">{ v.Surname }</td>
+					<td class=" border-gray-600 p-2 py-1">{ v.Class }</td>
+				}
 			}
 		</tbody>
 	</table>

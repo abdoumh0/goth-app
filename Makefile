@@ -4,7 +4,7 @@ run:
 tmpl:
 	@templ generate -watch
 
-tailwind:
+tw:
 	npx tailwindcss -i ./src/styles/styles.css -o ./assets/css/styles.css --minify --watch
 
 build:
