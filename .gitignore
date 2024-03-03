@@ -8,3 +8,4 @@ bin
 .air.toml
 
 **/*_templ.txt
+**/*js.map

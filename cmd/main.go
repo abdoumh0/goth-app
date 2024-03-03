@@ -20,7 +20,7 @@ func main() {
 
 	dbpool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
-		log.Fatal(os.Stderr, "Unable to connect to database: %v\n", err)
+		log.Fatal("Unable to connect to database; exiting...")
 	}
 	defer dbpool.Close()
 
