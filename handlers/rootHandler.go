@@ -14,7 +14,7 @@ import (
 
 
 func (s *Service) RootHandler(c echo.Context) error {
-	perpage := 2
+	perpage := 10
 
 	pages := s.getPagesCount(perpage)
 	page , err := strconv.Atoi(c.QueryParam("page"))

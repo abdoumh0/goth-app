@@ -20,13 +20,17 @@ func (s *Service) getPagesCount(perpage int) (count int) {
 	row := s.store.QueryRow(context.Background(), "select count(Id) from person;")
 	err := row.Scan(&count)
 	if err != nil {
-		return 0
+		count = 0
 	}
 	if count < perpage {
-		return 1
+		count = 1
 	} else {
-		return count / perpage
+		count = count / perpage
+		if count % perpage > 0 {
+			count ++
+		}
 	}
+	return
 }
 
 func (s *Service) getData( page int, perpage int) (p []types.Person) {
@@ -48,4 +52,21 @@ func (s *Service) getData( page int, perpage int) (p []types.Person) {
 		print(err.Error())
 	}
 	return
+}
+
+func (s *Service) postPerson(name string, surname string, class string) (types.Person, error)  {
+	row, err := s.store.Query(context.Background(), "insert into person (name, surname, class) values ($1, $2, $3) returning (id, name, surname, class);", name, surname, class)
+	if err != nil {
+		log.Fatal("postPerson err: ", err.Error())
+		return types.Person{}, err
+	}
+	var p types.Person
+	if row.Next() {
+		err = row.Scan(&p)
+	}
+	if err != nil {
+		log.Fatal("postPerson err: ", err.Error())
+	}
+
+	return p, nil
 }

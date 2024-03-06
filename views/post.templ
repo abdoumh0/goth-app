@@ -1,0 +1,20 @@
+package views
+
+templ PostResponse(id string, name string, surname string, class string, success bool) {
+	<tr class={ templ.KV("bg-red-100", !success), templ.KV("bg-emerald-100", success)  ,"text-center [&>td]:p-2" }>
+		<td class="min-w-56">{ id }</td>
+		<td class="min-w-56">{ name }</td>
+		<td class="min-w-56">{ surname }</td>
+		<td class="min-w-56">{ class }</td>
+		<td>
+			<div class="flex justify-between [&>button]:mx-[1px]">
+				if success {
+					<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/edit.svg" alt="edit" width="20px"/></button>
+					<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/delete.svg" alt="delete" width="20px"/></button>
+				} else {
+					<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/retry.svg" alt="edit" width="20px"/></button>
+				}
+			</div>
+		</td>
+	</tr>
+}

@@ -8,20 +8,23 @@ templ tableHeader(label string) {
 	</th>
 }
 
-templ tableRow() {
-	<tr class="text-center">
-		{ children... }
-		<td class="p-2">
+templ tableRow(id string, name string, surname string, class string) {
+	<tr class="text-center [&>td]:p-2">
+		<td class="min-w-56">{ id }</td>
+		<td class="min-w-56">{ name }</td>
+		<td class="min-w-56">{ surname }</td>
+		<td class="min-w-56">{ class }</td>
+		<td>
 			<div class="flex justify-between [&>button]:mx-[1px]">
-				<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/assets/images/edit.svg" alt="edit" width="20px"/></button>
-				<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/assets/images/delete.svg" alt="delete" width="20px"/></button>
+				<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/edit.svg" alt="edit" width="20px"/></button>
+				<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/delete.svg" alt="delete" width="20px"/></button>
 			</div>
 		</td>
 	</tr>
 }
 
 templ Table(data []types.Person) {
-	<table class="table-auto rounded overflow-hidden">
+	<table class="table-fixed rounded overflow-hidden">
 		<thead class="bg-indigo-400 text-white ">
 			<tr class="[&>th]:py-2">
 				@tableHeader("Id")
@@ -31,23 +34,18 @@ templ Table(data []types.Person) {
 				<th class="p-2">
 					<div class="flex justify-between [&>button]:mx-[1px]">
 						<button type="button" id="add" class="hover:bg-indigo-300 min-w-5 p-1 rounded">
-							<img src="/assets/images/add.svg" alt="add" width="20px"/>
+							<img src="/images/add.svg" alt="add" width="20px"/>
 						</button>
 						<button type="button" class="hover:bg-indigo-300 min-w-5 p-1 rounded">
-							<img src="/assets/images/print.svg" alt="print" width="16px"/>
+							<img src="/images/print.svg" alt="print" width="16px"/>
 						</button>
 					</div>
 				</th>
 			</tr>
 		</thead>
-		<tbody class="[&>tr:nth-child(even)]:bg-gray-100" id="tbody">
+		<tbody class="[&>tr:nth-child(even)]:bg-gray-100 [&>tr:nth-child(odd)]:bg-white" id="tbody">
 			for _, v := range data {
-				@tableRow() {
-					<td class=" border-gray-600 p-2 py-1">{ v.Id }</td>
-					<td class=" border-gray-600 p-2 py-1">{ v.Name }</td>
-					<td class=" border-gray-600 p-2 py-1">{ v.Surname }</td>
-					<td class=" border-gray-600 p-2 py-1">{ v.Class }</td>
-				}
+				@tableRow(v.Id, v.Name, v.Surname, v.Class)
 			}
 		</tbody>
 	</table>
