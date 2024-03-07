@@ -29,7 +29,9 @@ func main() {
 	s := handlers.NewService(dbpool)
 
 	e.GET("/", s.RootHandler)
+	e.GET("/add-form", handlers.AddForm)
 	e.POST("/post", s.PostHandler)
+	e.DELETE("/delete", s.DeleteHandler)
 
 	e.Static("/", "assets")
 	e.Start(":" + os.Getenv("PORT"))

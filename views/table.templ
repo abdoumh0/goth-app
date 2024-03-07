@@ -4,7 +4,10 @@ import "github.com/abdoumh0/goth-app/types"
 
 templ tableHeader(label string) {
 	<th class="px-10">
-		<div class="flex justify-center">{ label } <button type="button" class="mx-2">^</button></div>
+		<div class="flex justify-center">
+			{ label }
+			<button type="button" class="mx-2">^</button>
+		</div>
 	</th>
 }
 
@@ -15,16 +18,16 @@ templ tableRow(id string, name string, surname string, class string) {
 		<td class="min-w-56">{ surname }</td>
 		<td class="min-w-56">{ class }</td>
 		<td>
-			<div class="flex justify-between [&>button]:mx-[1px]">
+			<div class="flex justify-between [&>button]:mx-[1px] relative">
 				<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/edit.svg" alt="edit" width="20px"/></button>
-				<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/delete.svg" alt="delete" width="20px"/></button>
+				<button type="button" class="delete-btn hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/delete.svg" alt="delete" width="20px"/></button>
 			</div>
 		</td>
 	</tr>
 }
 
 templ Table(data []types.Person) {
-	<table class="table-fixed rounded overflow-hidden">
+	<table class="table-fixed rounded">
 		<thead class="bg-indigo-400 text-white ">
 			<tr class="[&>th]:py-2">
 				@tableHeader("Id")
@@ -33,7 +36,7 @@ templ Table(data []types.Person) {
 				@tableHeader("Class")
 				<th class="p-2">
 					<div class="flex justify-between [&>button]:mx-[1px]">
-						<button type="button" id="add" class="hover:bg-indigo-300 min-w-5 p-1 rounded">
+						<button type="button" id="add-form-btn" class="hover:bg-indigo-300 min-w-5 p-1 rounded">
 							<img src="/images/add.svg" alt="add" width="20px"/>
 						</button>
 						<button type="button" class="hover:bg-indigo-300 min-w-5 p-1 rounded">

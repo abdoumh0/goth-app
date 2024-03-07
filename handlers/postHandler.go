@@ -10,6 +10,12 @@ func (s *Service) PostHandler(c echo.Context) error {
 	surname := c.FormValue("surname")
 	class := c.FormValue("class")
 
+	if name == "" || surname == "" || class == "" {
+		print("shites\n")
+		return render(c, views.PostResponse("id", name, surname, class, false))	
+	}
+
+
 	p, err := s.postPerson(name, surname, class)
 
 	if err != nil {

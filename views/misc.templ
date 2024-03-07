@@ -18,3 +18,18 @@ templ PostResponse(id string, name string, surname string, class string, success
 		</td>
 	</tr>
 }
+
+templ AddForm() {
+	<tr class="text-center [&>td]:p-2" id="add-form-input">
+		<td class="min-w-56">id</td>
+		<td class="min-w-56"><input class="text-center" form="add-form" type="text" name="name" required placeholder="name"/></td>
+		<td class="min-w-56"><input class="text-center" form="add-form" type="text" name="surname" required placeholder="surname"/></td>
+		<td class="min-w-56"><input class="text-center" form="add-form" type="text" name="class" required placeholder="class"/></td>
+		<td>
+			<div class="flex justify-between [&>button]:mx-[1px]">
+				<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/submit.svg" alt="submit" width="20px"/></button>
+				<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/cancel.svg" alt="cancel" width="20px" id="add-form-cancel"/></button>
+			</div>
+		</td>
+	</tr>
+}

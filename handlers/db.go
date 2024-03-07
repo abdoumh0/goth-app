@@ -17,7 +17,7 @@ func NewService(s *pgxpool.Pool) Service {
 }
 
 func (s *Service) getPagesCount(perpage int) (count int) {
-	row := s.store.QueryRow(context.Background(), "select count(Id) from person;")
+	row := s.store.QueryRow(context.Background(), "select count(Id) from person where is_deleted = false")
 	err := row.Scan(&count)
 	if err != nil {
 		count = 0
@@ -34,7 +34,7 @@ func (s *Service) getPagesCount(perpage int) (count int) {
 }
 
 func (s *Service) getData( page int, perpage int) (p []types.Person) {
-	rows, err := s.store.Query(context.Background(), "select id, name, surname, class from person limit $1 offset $2", perpage, (page - 1) * perpage) // sql index >= 0
+	rows, err := s.store.Query(context.Background(), "select id, name, surname, class from person where is_deleted = false limit $1 offset $2", perpage, (page - 1) * perpage) // sql index >= 0
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.tippy-box[data-theme~="tomato"] {
+  background-color: tomato;
+  color: yellow;
+}
+
+.tippy-box[data-theme~="tomato"][data-placement^="top"] > .tippy-arrow::before {
+  border-top-color: tomato;
+}
+.tippy-box[data-theme~="tomato"][data-placement^="bottom"]
+  > .tippy-arrow::before {
+  border-bottom-color: tomato;
+}
+.tippy-box[data-theme~="tomato"][data-placement^="left"]
+  > .tippy-arrow::before {
+  border-left-color: tomato;
+}
+.tippy-box[data-theme~="tomato"][data-placement^="right"]
+  > .tippy-arrow::before {
+  border-right-color: tomato;
+}
+
+.animate {
+  animation: fadeIn 500ms ease-out forwards;
+}
+
+@keyframes slide {
+  from {
+    transform: translateX(250px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}

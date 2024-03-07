@@ -1,129 +1,133 @@
+import { createImg, createInput, createDialog } from "./lib/util";
+
 declare var htmx: any;
 
-const add = document.getElementById("add") as HTMLButtonElement;
+const dlt_btns = document.getElementsByClassName(
+  "delete-btn"
+) as HTMLCollectionOf<HTMLButtonElement>;
 
-const cnlOnclick = () => {
-  const tg = document.getElementById("target");
-  tg?.remove();
-  const f = document.getElementById("form");
-  f?.remove();
-};
+Array.from(dlt_btns).forEach((btn) => {
+  const row = btn.parentElement?.parentElement
+    ?.parentElement as HTMLTableRowElement;
+  const td = row.firstChild as HTMLTableSectionElement;
+  const id = td.innerHTML;
+  row.id = "row-" + id;
+  const dialog = createDialog();
+  const content = document.createElement("div");
+  content.classList.add("text-center", "grid", "gap-y-5", "my-2");
+  const confirm = document.createElement("button");
+  confirm.setAttribute("hx-delete", "/delete");
+  confirm.setAttribute("hx-trigger", "click");
+  confirm.setAttribute("hx-target", "#row-" + id);
+  confirm.setAttribute("hx-swap", "outerHTML");
+  confirm.setAttribute("hx-vals", `{"id": ${id}}`);
+  htmx.process(confirm);
+  confirm.append("Delete");
+  confirm.classList.add(
+    "p-2",
+    "text-center",
+    "font-semibold",
+    "text-white",
+    "bg-red-400",
+    "rounded",
+    "font-mono",
+    "w-fit",
+    "mx-auto"
+  );
 
+  confirm.onclick = () => {
+    dialog.close();
+  };
+
+  content.append("Are you sure you want to delete this item?", confirm);
+  dialog.append(content);
+  btn.onclick = () => {
+    document.body.append(dialog);
+    dialog.showModal();
+    console.log(id);
+  };
+});
+
+function cnlOnclick() {
+  document.getElementById("add-form-inputs")?.remove();
+  document.getElementById("add-form")?.remove();
+}
+
+const add = document.getElementById("add-form-btn") as HTMLButtonElement;
 add.onclick = (e) => {
-  if (document.getElementById("form") != null) {
+  if (document.getElementById("add-form") != null) {
     return;
   }
-  const table_container = document.getElementById(
-    "table_container"
-  ) as HTMLDivElement;
   const form = document.createElement("form");
-  form.id = "form";
+  form.id = "add-form";
   form.setAttribute("hx-post", "/post");
-  form.setAttribute("hx-target", "#target");
+  form.setAttribute("hx-target", "#add-form-inputs");
   form.setAttribute("hx-swap", "outerHTML");
+  form.setAttribute("hx-indicator", "#indicator");
+  form.setAttribute("hx-disabled-elt", "#add-form-submit");
   form.classList.add("hidden");
   document.body.append(form);
   htmx.process(form);
 
   const tbody = document.getElementById("tbody") as HTMLTableSectionElement;
   const row = document.createElement("tr");
-  row.id = "target";
+  row.id = "add-form-inputs";
+  row.classList.add("text-center", "[&>td]:p-2");
   let td = new Array(5) as HTMLTableCellElement[];
   for (let index = 0; index < td.length; index++) {
     td[index] = document.createElement("td");
-    td[index].classList.add("p-2", "py-1");
+    if (index < 4) {
+      td[index].classList.add("min-w-56");
+    }
   }
-  const name = document.createElement("input");
-  const surname = document.createElement("input");
-  const class_ = document.createElement("input");
+  const name = createInput("name", "add-form", "text");
+  const surname = createInput("surname", "add-form", "text");
+  const class_ = createInput("class", "add-form", "text");
+  const controls = document.createElement("div");
+  controls.classList.add("flex", "justify-between");
   const submit = document.createElement("button");
-  const cancel = document.createElement("button");
-  const sbt_img = document.createElement("img");
-  const cnl_img = document.createElement("img");
-  sbt_img.src = "/images/submit.svg";
-  sbt_img.alt = "submit";
-  sbt_img.width = 24;
-  cnl_img.src = "/images/cancel.svg";
-  cnl_img.alt = "cancel";
-  cnl_img.width = 24;
-  sbt_img.classList.add("hover:bg-gray-200", "rounded", "min-w-5");
-  cnl_img.classList.add("hover:bg-gray-200", "rounded", "min-w-5");
-  cancel.onclick = cnlOnclick;
   submit.type = "submit";
+  submit.id = "add-form-submit";
+  submit.classList.add(
+    "hover:bg-gray-200",
+    "min-w-5",
+    "rounded",
+    "p-1",
+    "mx-[1px]"
+  );
+  submit.setAttribute("form", "add-form");
+  const cancel = document.createElement("button");
+  const sbt_img = createImg("/images/submit.svg", "submit", 20);
+  const cnl_img = createImg("/images/cancel.svg", "cancel", 20);
+  const ind_img = createImg("/images/spinner.svg", "spinner", 20);
+  td[0].classList.add("flex", "justify-center");
+  ind_img.id = "indicator";
+  ind_img.classList.add("htmx-indicator", "animate-spin");
+  cancel.classList.add(
+    "hover:bg-gray-200",
+    "rounded",
+    "min-w-5",
+    "p-1",
+    "mx-[1px]"
+  );
+  cancel.onclick = cnlOnclick;
+  submit.append(sbt_img);
+  cancel.append(cnl_img);
+  td[0].append(ind_img);
   td[1].append(name);
   td[2].append(surname);
   td[3].append(class_);
   td[4].append(submit, cancel);
-  td[4].classList.add("flex", "justify-between", "py-1", "mt-2");
-  submit.append(sbt_img);
-  cancel.append(cnl_img);
-  name.type = "text";
-  surname.type = "text";
-  class_.type = "text";
-  name.name = "name";
-  surname.name = "surname";
-  class_.name = "class";
-  name.required = true;
-  surname.required = true;
-  class_.required = true;
-  name.autocomplete = "off";
-  surname.autocomplete = "off";
-  class_.autocomplete = "off";
-  name.setAttribute("form", "form");
-  surname.setAttribute("form", "form");
-  class_.setAttribute("form", "form");
-  submit.setAttribute("form", "form");
-  name.placeholder = "name";
-  surname.placeholder = "surname";
-  class_.placeholder = "class";
-  name.classList.add(
-    "text-center",
-    "py-1",
-    "my-1",
-    "rounded",
-    "bg-inherit",
-    "w-full"
-  );
-  surname.classList.add(
-    "text-center",
-    "py-1",
-    "my-1",
-    "rounded",
-    "bg-inherit",
-    "w-full"
-  );
-  class_.classList.add(
-    "text-center",
-    "py-1",
-    "my-1",
-    "rounded",
-    "bg-inherit",
-    "w-full"
-  );
+  td[4].classList.add("flex", "justify-between", "my-1");
   row.append(td[0], td[1], td[2], td[3], td[4]);
   tbody.prepend(row);
   name.focus();
 };
 
-// htmx.onLoad((q) => {
-//   console.log(q);
-//   const form = document.getElementById("form");
-//   const target = document.getElementById("target");
-//   if (form && !target) {
-//     const tc = document.getElementById("table_container");
-//     const table = document.querySelector("table") as HTMLTableElement;
-//     tc?.append(table);
-//     form.remove();
-//   }
-// });
-
 const observer = new MutationObserver((mutations, observer) => {
-  const form = document.getElementById("form");
-  const target = document.getElementById("target");
+  const form = document.getElementById("add-form");
+  const target = document.getElementById("add-form-inputs");
   if (form && !target) {
-    const tc = document.getElementById("table_container");
-    const table = document.querySelector("table") as HTMLTableElement;
-    tc?.append(table);
     form.remove();
   }
 });
