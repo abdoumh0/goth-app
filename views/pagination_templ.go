@@ -150,13 +150,13 @@ func Pagination(pages int, route string, param string, abbr int, currentPage int
 				return templ_7745c5c3_Err
 			}
 		}
-		if currentPage-3 > 1 {
+		if currentPage-3 > 2 {
 			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 10)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		for i := currentPage - 2; i < min(pages, max(currentPage+4, abbr+1)); i++ {
+		for i := currentPage - 3; i < min(pages, max(currentPage+4, abbr+1)); i++ {
 			if i > 1 {
 				templ_7745c5c3_Err = pageLink(route+"?"+param+"="+strconv.Itoa(i), strconv.Itoa(i), i, currentPage).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
@@ -164,7 +164,7 @@ func Pagination(pages int, route string, param string, abbr int, currentPage int
 				}
 			}
 		}
-		if currentPage+4 < pages {
+		if currentPage+4 < pages-1 {
 			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 11)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

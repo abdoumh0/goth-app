@@ -31,7 +31,8 @@ func main() {
 	e.GET("/", s.RootHandler)
 	e.GET("/add-form", handlers.AddForm)
 	e.POST("/post", s.PostHandler)
-	e.DELETE("/delete", s.DeleteHandler)
+	e.POST("/delete", s.DeleteHandler)
+	e.POST("/restore", s.RestoreHandler)
 
 	e.Static("/", "assets")
 	e.Start(":" + os.Getenv("PORT"))

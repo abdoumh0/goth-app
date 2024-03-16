@@ -1,5 +1,7 @@
 package views
 
+import "fmt"
+
 templ PostResponse(id string, name string, surname string, class string, success bool) {
 	<tr class={ templ.KV("bg-red-100", !success), templ.KV("bg-emerald-100", success)  ,"text-center [&>td]:p-2" }>
 		<td class="min-w-56">{ id }</td>
@@ -10,7 +12,7 @@ templ PostResponse(id string, name string, surname string, class string, success
 			<div class="flex justify-between [&>button]:mx-[1px]">
 				if success {
 					<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/edit.svg" alt="edit" width="20px"/></button>
-					<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/delete.svg" alt="delete" width="20px"/></button>
+					<button type="button" class="delete-btn hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/delete.svg" alt="delete" width="20px"/></button>
 				} else {
 					<button type="button" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/retry.svg" alt="edit" width="20px"/></button>
 				}
@@ -32,4 +34,46 @@ templ AddForm() {
 			</div>
 		</td>
 	</tr>
+}
+
+templ DeleteResponse(id string, name string, surname string, class string, success bool) {
+	<tr class="text-center [&>td]:p-2">
+		<td class="min-w-56">{ id }</td>
+		<td class="min-w-56">{ name }</td>
+		<td class="min-w-56">{ surname }</td>
+		<td class="min-w-56">{ class }</td>
+		<td>
+			<div class="flex justify-between [&>button]:mx-[1px]">
+				if success {
+					<button hx-post="/restore" hx-swap="outerHTML" hx-disabled-elt="this" hx-target="closest tr" hx-vals={ fmt.Sprintf("{\"id\": %v}", id) } hx-indicator="#restore-indicator" class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/undo.svg" alt="edit" width="20px"/></button>
+					<div class="grid place-content-center">
+						<img src="/images/spinner.svg" alt="indicator" width="20px" class="htmx-indicator animate-spin" id="restore-indicator"/>
+					</div>
+				} else {
+					<button hx-post="/delete" hx-swap="outerHTML" hx-disabled-elt="this" hx-target="closest tr" hx-vals={ fmt.Sprintf("{\"id\": %v}", id) } class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/retry.svg" hx-indicator="#retry-indicator" alt="edit" width="20px"/></button>
+					<div class="grid place-content-center">
+						<img src="/images/spinner.svg" alt="indicator" width="20px" class="htmx-indicator animate-spin" id="retry-indicator"/>
+					</div>
+				}
+			</div>
+		</td>
+	</tr>
+}
+
+templ RestoreResponse(id string, name string, surname string, class string, success bool) {
+	if !success {
+		<tr class="text-center [&>td]:p-2">
+			<td class="min-w-56">{ id }</td>
+			<td class="min-w-56">{ name }</td>
+			<td class="min-w-56">{ surname }</td>
+			<td class="min-w-56">{ class }</td>
+			<td>
+				<div class="flex justify-between [&>button]:mx-[1px]">
+					<button hx-post="/restore" hx-swap="outerHTML" hx-disabled-elt="this" hx-target="closest tr" hx-vals={ fmt.Sprintf("{\"id\": %v}", id) } class="hover:bg-gray-200 min-w-5 rounded p-1"><img src="/images/retry.svg" alt="undo" width="20px"/></button>
+				</div>
+			</td>
+		</tr>
+	} else {
+		@tableRow(id, name, surname, class)
+	}
 }

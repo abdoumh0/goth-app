@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"log"
+	"strconv"
 
 	"github.com/abdoumh0/goth-app/types"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -34,7 +35,7 @@ func (s *Service) getPagesCount(perpage int) (count int) {
 }
 
 func (s *Service) getData( page int, perpage int) (p []types.Person) {
-	rows, err := s.store.Query(context.Background(), "select id, name, surname, class from person where is_deleted = false limit $1 offset $2", perpage, (page - 1) * perpage) // sql index >= 0
+	rows, err := s.store.Query(context.Background(), "select id, name, surname, class from person where is_deleted = false order by id asc limit $1 offset $2", perpage, (page - 1) * perpage) // sql index >= 0
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -69,4 +70,17 @@ func (s *Service) postPerson(name string, surname string, class string) (types.P
 	}
 
 	return p, nil
+}
+
+func (s *Service) updatePerson(id string, delete bool) (p types.Person, success bool) {
+	row := s.store.QueryRow(context.Background(), "update person set is_deleted = $1 where id = $2 returning (id, name, surname, class)", strconv.FormatBool(delete), id)
+	var updated_p types.Person 
+
+	row.Scan(&updated_p)
+
+	if id == updated_p.Id {
+		return updated_p, true
+	} else {
+		return types.Person{}, false
+	}
 }

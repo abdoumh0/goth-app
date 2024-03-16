@@ -23,17 +23,17 @@
   border-right-color: tomato;
 }
 
-.animate {
-  animation: fadeIn 500ms ease-out forwards;
+.animate-slide-in {
+  animation: slide-in 500ms ease-out forwards;
 }
 
-@keyframes slide {
+@keyframes slide-in {
   from {
-    transform: translateX(250px);
+    transform: translateY(-15%);
     opacity: 0;
   }
   to {
-    transform: translateX(0px);
+    transform: translateY(0px);
     opacity: 1;
   }
 }

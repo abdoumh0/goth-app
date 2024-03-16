@@ -12,7 +12,7 @@ templ tableHeader(label string) {
 }
 
 templ tableRow(id string, name string, surname string, class string) {
-	<tr class="text-center [&>td]:p-2">
+	<tr class="text-center [&>td]:p-2" id={ "row-" + id }>
 		<td class="min-w-56">{ id }</td>
 		<td class="min-w-56">{ name }</td>
 		<td class="min-w-56">{ surname }</td>
